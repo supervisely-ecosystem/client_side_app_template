@@ -1,5 +1,4 @@
 from sly import WebPyApplication
-import gui
 
 
 app = WebPyApplication()
