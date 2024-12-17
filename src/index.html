@@ -1,93 +1,110 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-  <link id="favicon" rel="icon" type="image/x-icon" href="https://cdn.supervise.ly/favicon.ico" />
-  <link type="text/css" rel="stylesheet"
-    href="https://cdn.jsdelivr.net/gh/supervisely/js-bundle@2.1.97/sly-app-widgets-2.1.97.bundle.css" />
-  <style>
-    #app-global-loading-icon {
-      background: white;
-      border-radius: 50%;
-      width: 75px;
-      height: 75px;
-      padding: 10px;
-      margin: 10px 0;
-      position: relative;
-    }
-
-    @keyframes app-loading-rotation {
-      0% {
-        transform: rotate(0deg);
+  <head>
+    <link
+      id="favicon"
+      rel="icon"
+      type="image/x-icon"
+      href="https://cdn.supervise.ly/favicon.ico"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/supervisely/js-bundle@2.1.97/sly-app-widgets-2.1.97.bundle.css"
+    />
+    <style>
+      #app-global-loading-icon {
+        background: white;
+        border-radius: 50%;
+        width: 75px;
+        height: 75px;
+        padding: 10px;
+        margin: 10px 0;
+        position: relative;
       }
 
-      100% {
-        transform: rotate(360deg);
+      @keyframes app-loading-rotation {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
-    }
 
-    #app-global-loading-icon::after {
-      content: "";
-      box-sizing: border-box;
-      position: absolute;
-      left: 0;
-      top: 0;
-      transform: translate(-50%, -50%);
-      width: 95px;
-      height: 95px;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      border-bottom-color: #fb4481;
-      animation: app-loading-rotation 1s linear infinite;
-    }
+      #app-global-loading-icon::after {
+        content: "";
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform: translate(-50%, -50%);
+        width: 95px;
+        height: 95px;
+        border-radius: 50%;
+        border: 3px solid transparent;
+        border-bottom-color: #fb4481;
+        animation: app-loading-rotation 1s linear infinite;
+      }
 
-    #app-global-loading-icon>img {
-      width: 75px;
-      border-radius: 50%;
-    }
+      #app-global-loading-icon > img {
+        width: 75px;
+        border-radius: 50%;
+      }
 
-    .extended-app-header .app-session-header-widget>div {
-      margin-bottom: 0;
-      padding-left: 20px;
-    }
+      .extended-app-header .app-session-header-widget > div {
+        margin-bottom: 0;
+        padding-left: 20px;
+      }
 
-    .app-session-header-solid {
-      background: white;
-      box-shadow: 0 5px 10px #0000000d;
-      border-bottom: 1px solid #dfe2e8;
-      position: relative;
-    }
-  </style>
-  <title>Supervisely App</title>
-</head>
+      .app-session-header-solid {
+        background: white;
+        box-shadow: 0 5px 10px #0000000d;
+        border-bottom: 1px solid #dfe2e8;
+        position: relative;
+      }
+    </style>
+    <title>Supervisely App</title>
+  </head>
 
-<body style="background-color: #f4f7fe">
-  <center>
-    <div id="app-global-loading-icon">
-      <img src="https://app.supervise.ly/loading.gif" />
-    </div>
-  </center>
-  <script
-    src="https://cdn.jsdelivr.net/gh/supervisely/js-bundle@2.1.97/sly-app-widgets-2.1.97.bundle.js"></script>
-  <script type="module"
-    src="https://cdn.jsdelivr.net/gh/supervisely-ecosystem/supervisely-app-frontend-js@vv0.0.54/SlyApp.js"></script>
-  <script>
-    window.parent.postMessage('{ "showHeader": false }', "*");
-  </script>
+  <body style="background-color: #f4f7fe">
+    <center>
+      <div id="app-global-loading-icon">
+        <img src="https://app.supervise.ly/loading.gif" />
+      </div>
+    </center>
+    <script src="https://cdn.jsdelivr.net/gh/supervisely/js-bundle@2.1.97/sly-app-widgets-2.1.97.bundle.js"></script>
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/gh/supervisely-ecosystem/supervisely-app-frontend-js@vv0.0.54/SlyApp.js"
+    ></script>
+    <script>
+      window.parent.postMessage('{ "showHeader": false }', "*");
+    </script>
 
-  
+    
 
-  <div id="sly-app">
-    <sly-app>
-      <template v-slot="{ post, state, data, session }">
-        <div
-          :style="{'padding': `${state.app_body_padding} ${state.app_body_padding} 0`, 'display': 'flex', 'flex-direction': 'row', 'place-items': 'center'}"
-            >
-          <sly-app-header v-if="session" :session="session" :data="data" :state="state"></sly-app-header>
-          
-        </div>
-        <div :style="{'padding': `0 ${state.app_body_padding} ${state.app_body_padding}`}">
-           <div><div v-if="!data.__app_main_layout__.hide" v-loading="data.__app_main_layout__.loading"><link href="./sly/css/app/widgets/container/style.css" rel="stylesheet" v-if="!data.widget_4.hide" v-loading="data.widget_4.loading"/>
+    <div id="sly-app">
+      <sly-app>
+        <template v-slot="{ post, state, data, session }">
+          <div
+            :style="{'padding': `${state.app_body_padding} ${state.app_body_padding} 0`, 'display': 'flex', 'flex-direction': 'row', 'place-items': 'center'}"
+            
+            
+            
+          >
+            <sly-app-header
+              v-if="session"
+              :session="session"
+              :data="data"
+              :state="state"
+            ></sly-app-header>
+            
+          </div>
+          <div
+            :style="{'padding': `0 ${state.app_body_padding} ${state.app_body_padding}`}"
+          >
+             <div><div v-if="!data.__app_main_layout__.hide" v-loading="data.__app_main_layout__.loading"><link href="./sly/css/app/widgets/container/style.css" rel="stylesheet" v-if="!data.widget_4.hide" v-loading="data.widget_4.loading"/>
 <!-- should be widget._direction == 'vertical' instead of widget._flex_direction == 'vertical' -->
 <div class="container" style="flex-direction: column; gap: 10px; " v-if="!data.widget_4.hide" v-loading="data.widget_4.loading">
 <div style=""><div v-if="(data.widget_1.text) &amp;&amp; data.widget_1.hide === false" v-loading="data.widget_1.loading">
@@ -160,67 +177,24 @@
     >
   </div>
 </el-dialog>
-        </div>
-      </template>
-    </sly-app>
-  </div>
+          </div>
+        </template>
+      </sly-app>
+    </div>
 
-  <!-- Offline session styles fix -->
-  <script>
-    let resizeCounter = 0;
-    let resizeInterval = setInterval(() => {
-      resizeCounter += 1;
-      window.dispatchEvent(new Event("resize"));
+    <!-- Offline session styles fix -->
+    <script>
+      let resizeCounter = 0;
+      let resizeInterval = setInterval(() => {
+        resizeCounter += 1;
+        window.dispatchEvent(new Event("resize"));
 
-      if (resizeCounter > 3) {
-        clearInterval(resizeInterval);
-      }
-    }, 2000);
-  </script>
-  <!-- WebPyScript -->
-  
-  <script>
-    let pyodide = null;
-    let mainScriptTxt = null;
-
-    async function loadMainPythonScript() {
-      pyodide = await loadPyodide();
-      await pyodide.loadPackage(["supervisely"]);
-
-      mainScriptTxt = await fetch("./main.py").then((response) => response.text());
-    }
-
-    let initPromise = null;
-
-    async function runPythonScript(...params) {
-      if (initPromise) {
-        await initPromise;
-        initPromise = null;
-      }
-
-      let result;
-      const timeStart = performance.now();
-
-      const fn = pyodide.runPython(mainScriptTxt);
-      if (typeof fn === "function") {
-        const newParams = params.map(p => pyodide.toPy(p));
-        result = fn(...newParams);
-      } else {
-        result = fn;
-      }
-
-      const timeEnd = performance.now();
-
-      return result;
-    }
-
-    const runPythonScriptThrottled = _.throttle(runPythonScript, 50);
-
-    initPromise = loadMainPythonScript();
-  </script>
-  
-  <!-- Hot reload script -->
-  
-</body>
-
+        if (resizeCounter > 3) {
+          clearInterval(resizeInterval);
+        }
+      }, 2000);
+    </script>
+    <!-- Hot reload script -->
+    
+  </body>
 </html>
