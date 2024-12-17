@@ -1,0 +1,5 @@
+<el-breadcrumb separator="{{{widget.separator}}}">
+    {% for item in widget.items %}
+    <el-breadcrumb-item :to="{{{item.link}}}">{{{item.name}}}</el-breadcrumb-item>
+    {% endfor %}
+</el-breadcrumb>

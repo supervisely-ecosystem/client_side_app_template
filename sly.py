@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 import shutil
 
@@ -52,6 +53,8 @@ class WebPyApplication:
     def render(cls, layout, dir=""):
         import supervisely as sly
         from supervisely.app.content import DataJson, StateJson
+        from fastapi.staticfiles import StaticFiles
+        from fastapi.routing import Mount
 
         app = sly.Application(layout=layout)
         index = app.render({"__webpy_script__": True})
@@ -68,6 +71,21 @@ class WebPyApplication:
         shutil.copy("sly.py", dir / "sly.py")
         shutil.copy("gui.py", dir / "gui.py")
         shutil.copy("main.py", dir / "main.py")
+
+        server = app.get_server()
+        for route in server.routes:
+            if route.path == "/sly":
+                route: Mount
+                for route in route.routes:
+                    if route.path == "/css" and isinstance(route.app, StaticFiles):
+                        source_dir = route.app.directory
+                        for root, _, files in os.walk(source_dir):
+                            rel_path = Path(root).relative_to(source_dir)
+                            for file in files:
+                                if file.endswith(("css", "js", "html")):
+                                    sly.fs.copy_file(
+                                        Path(root, file), dir / Path("sly/css", rel_path, file)
+                                    )
 
     def _get_handler(self, *args, **kwargs):
         if len(args) != 1:
