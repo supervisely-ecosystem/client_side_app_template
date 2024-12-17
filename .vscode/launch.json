@@ -8,6 +8,15 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": false
+        },
+        {
+            "name": "Python Debugger: Current File with arg",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "args": ["/widget_3/button_clicked_cb"],
+            "console": "integratedTerminal",
+            "justMyCode": false
         }
     ]
 }

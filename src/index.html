@@ -87,11 +87,40 @@
           
         </div>
         <div :style="{'padding': `0 ${state.app_body_padding} ${state.app_body_padding}`}">
-           <div><div v-if="!data.__app_main_layout__.hide" v-loading="data.__app_main_layout__.loading"><div v-if="(data.TextAutoIdeJE3I.text) &amp;&amp; data.TextAutoIdeJE3I.hide === false" v-loading="data.TextAutoIdeJE3I.loading">
-<i :class="data.TextAutoIdeJE3I.icon" :style="{color: data.TextAutoIdeJE3I.icon_color}" style="margin-right: 5px" v-if="data.TextAutoIdeJE3I.icon"></i>
-<span :style="{color: data.TextAutoIdeJE3I.text_color}">
-<span v-bind:style="{ fontSize: data.TextAutoIdeJE3I.font_size }" v-html="data.TextAutoIdeJE3I.text"></span>
+           <div><div v-if="!data.__app_main_layout__.hide" v-loading="data.__app_main_layout__.loading"><link href="./sly/css/app/widgets/container/style.css" rel="stylesheet" v-if="!data.widget_4.hide" v-loading="data.widget_4.loading"/>
+<!-- should be widget._direction == 'vertical' instead of widget._flex_direction == 'vertical' -->
+<div class="container" style="flex-direction: column; gap: 10px; " v-if="!data.widget_4.hide" v-loading="data.widget_4.loading">
+<div style=""><div v-if="(data.widget_1.text) &amp;&amp; data.widget_1.hide === false" v-loading="data.widget_1.loading">
+<i :class="data.widget_1.icon" :style="{color: data.widget_1.icon_color}" style="margin-right: 5px" v-if="data.widget_1.icon"></i>
+<span :style="{color: data.widget_1.text_color}">
+<span v-bind:style="{ fontSize: data.widget_1.font_size }" v-html="data.widget_1.text"></span>
 </span>
+</div></div>
+<div style=""><el-select :disabled="data.widget_2.disabled" :filterable="data.widget_2.filterable" :fit-input-width="data.widget_2.fit_input_width" :multiple="data.widget_2.multiple" :placeholder="data.widget_2.placeholder" @change="runPythonScript('/widget_2/value_changed')" v-if="!data.widget_2.hide" v-loading="data.widget_2.loading" v-model="state.widget_2.value">
+<div v-if="data.widget_2.items">
+<el-option :disabled="item.disabled" :key="item.value" :label="item.label" :value="item.value" v-for="item in data.widget_2.items">
+<span style="float: left" v-if="item.right_text !== null">{{ item.label }}</span>
+<span style="float: right; color: #8492a6; font-size: 13px" v-if="item.right_text !== null">{{ item.right_text }}</span>
+</el-option>
+</div>
+<div v-else="">
+<el-option-group :disabled="group.disabled" :key="group.label" :label="group.label" v-for="group in data.widget_2.groups">
+<el-option :disabled="item.disabled" :key="item.value" :label="item.label" :value="item.value" v-for="item in group.options">
+<span style="float: left" v-if="item.right_text">{{ item.label }}</span>
+<span style="float: right; color: #8492a6; font-size: 13px" v-if="item.right_text">{{ item.right_text }}</span>
+</el-option>
+</el-option-group>
+</div>
+</el-select>
+<span style="margin-left:10px;" v-if="(data.widget_2.with_link) &amp;&amp; data.widget_2.hide === false" v-loading="data.widget_2.loading">
+<a :href="state.widget_2.links[state.widget_2.value]" target="_blank">Learn more...</a>
+</span></div>
+<div style=""><!-- <link rel="stylesheet" href="./sly/css/app/widgets/button/style.css" /> -->
+<el-button :disabled="data.widget_3.disabled" :loading="data.widget_3.loading" :plain="data.widget_3.plain" :size="data.widget_3.button_size" :type="data.widget_3.button_type" @click="runPythonScript('/widget_3/button_clicked_cb');" v-if="!data.widget_3.hide">
+<span v-html="data.widget_3.icon"></span>
+<span v-html="data.widget_3.text"></span>
+</el-button>
+</div>
 </div></div></div>  <el-dialog
   v-model="state.slyAppShowDialog"
   :title="data.slyAppDialogTitle"
