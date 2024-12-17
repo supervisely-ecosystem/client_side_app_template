@@ -1,7 +1,7 @@
 from supervisely.app.widgets import Text, Container, Button, Select
 
-text = globals().get("text", Text("Hello, World!", widget_id="widget_1"))
-select = globals().get(
+text: Text = globals().get("text", Text("Hello, World!", widget_id="widget_1"))
+select: Select = globals().get(
     "select",
     Select(
         items=[Select.Item("Option 1"), Select.Item("Option 2"), Select.Item("Option 3")],
@@ -20,3 +20,4 @@ def on_select_change(value):
 @button.click
 def on_button_click():
     print("Button clicked!")
+    text.text = str(select.get_value())
