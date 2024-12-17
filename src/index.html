@@ -185,7 +185,7 @@
 
     async function loadMainPythonScript() {
       pyodide = await loadPyodide();
-      await pyodide.loadPackage(["numpy", "opencv-python"]);
+      await pyodide.loadPackage(["supervisely"]);
 
       mainScriptTxt = await fetch("./main.py").then((response) => response.text());
     }
@@ -201,7 +201,6 @@
       let result;
       const timeStart = performance.now();
 
-      console.log('Applying CLAHE...')
       const fn = pyodide.runPython(mainScriptTxt);
       if (typeof fn === "function") {
         const newParams = params.map(p => pyodide.toPy(p));
@@ -211,7 +210,6 @@
       }
 
       const timeEnd = performance.now();
-      console.log("CLAHE executed in", timeEnd - timeStart, "ms");
 
       return result;
     }
