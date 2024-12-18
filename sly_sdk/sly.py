@@ -67,8 +67,10 @@ class _PatchableJson(dict):
         if self._linked_obj is None:
             return
 
+        from pyodide.ffi import to_js
+
         for key, value in self.items():
-            self._linked_obj[key] = value
+            setattr(self._linked_obj, key, to_js(value))
 
 
 class StateJson(_PatchableJson, metaclass=Singleton):
