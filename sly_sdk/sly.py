@@ -148,7 +148,7 @@ class WebPyApplication:
         return DataJson()
 
     @classmethod
-    def render(cls, layout, dir=""):
+    def render(cls, layout, dir="", requirements_path: str = None):
         import json
         import os
         from pathlib import Path
@@ -159,7 +159,10 @@ class WebPyApplication:
         from fastapi.routing import Mount
 
         app = sly.Application(layout=layout)
-        index = app.render({"__webpy_script__": True})
+        reqs = None
+        if requirements_path is not None:
+            reqs = Path(requirements_path).read_text().splitlines()
+        index = app.render({"__webpy_script__": True, "pyodide_requirements": reqs})
         # @change="post('/{{{widget.widget_id}}}/value_changed')" -> @change="runPythonScript('/{{{widget.widget_id}}}/value_changed')"
         index = index.replace("post('/", "runPythonScript('/")
 
