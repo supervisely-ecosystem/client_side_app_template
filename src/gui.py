@@ -1,10 +1,4 @@
-try:
-    import supervisely
-except ImportError:
-    import sys
-    import sly_sdk as supervisely
-
-    sys.modules["supervisely"] = supervisely
+import supervisely
 
 from supervisely.app.widgets import Text, Container, Button, Select
 

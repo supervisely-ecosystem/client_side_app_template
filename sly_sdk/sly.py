@@ -1,4 +1,5 @@
 import enum
+import tarfile
 from fastapi import FastAPI
 
 
@@ -159,7 +160,16 @@ class WebPyApplication:
         shutil.copy("gui.py", dir / "gui.py")
         shutil.copy("main.py", dir / "main.py")
 
-        shutil.copytree("sly_sdk", dir / "sly_sdk", dirs_exist_ok=True)
+        with tarfile.open(dir / "sly_sdk.tar", "w") as tar:
+            tar.add(
+                "sly_sdk",
+                arcname="sly_sdk",
+                filter=lambda tarinfo: (
+                    None
+                    if "__pycache__" in tarinfo.name or tarinfo.name.endswith(".pyc")
+                    else tarinfo
+                ),
+            )
 
         server = app.get_server()
         for route in server.routes:
