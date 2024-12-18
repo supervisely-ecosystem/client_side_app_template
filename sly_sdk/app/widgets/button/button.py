@@ -5,7 +5,7 @@ try:
 except ImportError:
     from typing_extensions import Literal
 
-from sly_sdk.sly import DataJson
+from sly_sdk.sly import DataJson, MainServer
 from sly_sdk.app.widgets.widget import Widget
 
 
@@ -273,22 +273,19 @@ class Button(Widget):
         DataJson()[self.widget_id]["disabled"] = self._disabled
 
     def click(self, func: Callable[[], None]) -> Callable[[], None]:
-        #
-        #  DELETED BECAUSE SHOULD NOT BE USED IN WEBPY RUNTIME
-        #
-        # """Decorator that allows to handle button click. Decorated function
-        # will be called on button click.
+        """Decorator that allows to handle button click. Decorated function
+        will be called on button click.
 
-        # :param func: Function to be called on button click.
-        # :type func: Callable
-        # :return: Decorated function.
-        # :rtype: Callable
-        # """
-        # route_path = self.get_route_path(Button.Routes.CLICK)
-        # server = self._sly_app.get_server()
-        # self._click_handled = True
+        :param func: Function to be called on button click.
+        :type func: Callable
+        :return: Decorated function.
+        :rtype: Callable
+        """
+        route_path = self.get_route_path(Button.Routes.CLICK)
+        server = MainServer()
+        self._click_handled = True
 
-        # @server.post(route_path)
+        @server.post(route_path)
         def _click():
             if self.show_loading:
                 self.loading = True

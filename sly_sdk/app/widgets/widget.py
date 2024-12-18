@@ -259,12 +259,12 @@ class Widget(BaseWidget, Hidable, Disableable, Loading):
         if widget_data is not None:
             DataJson().setdefault(self.widget_id, {}).update(widget_data)
 
+    def get_route_path(self, route: str) -> str:
+        return f"/{self.widget_id}/{route}"
+
     #
     #  DELETED BECAUSE SHOULD NOT BE USED IN WEBPY RUNTIME
     #
-    # def get_route_path(self, route: str) -> str:
-    #     return f"/{self.widget_id}/{route}"
-
     # def to_html(self):
     #     current_dir = Path(self._file_path).parent.absolute()
     #     jinja2_sly_env: Environment = create_env(current_dir)

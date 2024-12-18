@@ -6,7 +6,7 @@ try:
 except ImportError:
     from typing_extensions import Literal
 
-from sly_sdk.sly import StateJson, DataJson
+from sly_sdk.sly import StateJson, DataJson, MainServer
 from sly_sdk.app.widgets.widget import Widget, ConditionalWidget
 
 
@@ -177,14 +177,11 @@ class Select(ConditionalWidget):
         return labels
 
     def value_changed(self, func):
-        #
-        #  DELETED BECAUSE SHOULD NOT BE USED IN WEBPY RUNTIME
-        #
-        # route_path = self.get_route_path(Select.Routes.VALUE_CHANGED)
-        # server = self._sly_app.get_server()
-        # self._changes_handled = True
+        route_path = self.get_route_path(Select.Routes.VALUE_CHANGED)
+        server = MainServer()
+        self._changes_handled = True
 
-        # @server.post(route_path)
+        @server.post(route_path)
         async def _click():
             res = self.get_value()
             func(res)
