@@ -124,14 +124,14 @@ class WebPyApplication:
     def state(self):
         if not self.is_inited:
             self.__init_state()
-        StateJson().update(self._state)
+        StateJson().link(self._state)
         return StateJson()
 
     @property
     def data(self):
         if not self.is_inited:
             self.__init_state()
-        DataJson().update(self._data)
+        DataJson().link(self._data)
         return DataJson()
 
     @classmethod
