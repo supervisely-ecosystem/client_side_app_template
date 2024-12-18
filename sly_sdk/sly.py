@@ -66,9 +66,8 @@ class _PatchableJson(dict):
     def send_changes(self):
         if self._linked_obj is None:
             return
-        from pyodide.ffi import to_js
 
-        for key, value in to_js(self):
+        for key, value in self.items():
             self._linked_obj[key] = value
 
 
