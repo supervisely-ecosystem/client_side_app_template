@@ -159,7 +159,7 @@ class WebPyApplication:
         shutil.copy("gui.py", dir / "gui.py")
         shutil.copy("main.py", dir / "main.py")
 
-        shutil.copytree("sly_sdk", dir / "sly_sdk")
+        shutil.copytree("sly_sdk", dir / "sly_sdk", dirs_exist_ok=True)
 
         server = app.get_server()
         for route in server.routes:

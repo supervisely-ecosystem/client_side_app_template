@@ -67,6 +67,7 @@
       <img src="https://app.supervise.ly/loading.gif" />
     </div>
   </center>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
   <script
     src="https://cdn.jsdelivr.net/gh/supervisely/js-bundle@2.1.97/sly-app-widgets-2.1.97.bundle.js"></script>
   <script type="module"
@@ -182,7 +183,7 @@
 
     async function loadMainPythonScript() {
       pyodide = await loadPyodide();
-      await pyodide.loadPackage(["numpy", "opencv-python"]);
+      // await pyodide.loadPackage(["numpy", "opencv-python"]);
 
       mainScriptTxt = await fetch("./main.py").then((response) => response.text());
     }
