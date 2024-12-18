@@ -151,6 +151,7 @@ class WebPyApplication:
         index = index.replace("post('/", "runPythonScript('/")
 
         dir = Path(dir)
+        os.makedirs(dir, exist_ok=True)
         with open(dir / "index.html", "w") as f:
             f.write(index)
 
@@ -160,10 +161,10 @@ class WebPyApplication:
         shutil.copy("gui.py", dir / "gui.py")
         shutil.copy("main.py", dir / "main.py")
 
-        with tarfile.open(dir / "supervisely.tar", "w") as tar:
+        with tarfile.open(dir / "sly_sdk.tar", "w") as tar:
             tar.add(
                 "sly_sdk",
-                arcname="supervisely",
+                arcname="sly_sdk",
                 filter=lambda tarinfo: (
                     None
                     if "__pycache__" in tarinfo.name or tarinfo.name.endswith(".pyc")
