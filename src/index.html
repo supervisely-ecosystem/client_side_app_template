@@ -242,7 +242,7 @@ if extract_to not in sys.path:
         await micropip.install("fastapi")
       `);
 
-      setupAndImportPythonPackage("./sly_sdk.tar", "supervisely")
+      setupAndImportPythonPackage("./supervisely.tar", "supervisely")
 
       await loadDependency(pyodide, "./sly.py", "sly")
       await loadDependency(pyodide, "./gui.py", "gui")
