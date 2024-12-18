@@ -11,9 +11,4 @@ def main(*args, **kwargs):
     print("Kwargs:", kwargs)
 
 
-if __name__ == "__main__":
-    import sys
-
-    app.run(*sys.argv[1:])
-
 app.run
