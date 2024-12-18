@@ -68,7 +68,7 @@ class _PatchableJson(dict):
             return
 
         from pyodide.ffi import to_js
-        from pyodide.js import Object
+        from js import Object
 
         def py_to_js(obj):
             if isinstance(obj, dict):
