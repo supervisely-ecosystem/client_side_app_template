@@ -1,4 +1,4 @@
-from sly import WebPyApplication
+from sly_sdk.sly import WebPyApplication
 
 if __name__ == "__main__":
     import gui

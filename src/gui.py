@@ -1,5 +1,6 @@
 from supervisely.app.widgets import Text, Container, Button, Select
 
+
 text: Text = globals().get("text", Text("Hello, World!", widget_id="widget_1"))
 select: Select = globals().get(
     "select",

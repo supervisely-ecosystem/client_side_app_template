@@ -1,7 +1,5 @@
-import json
-import os
-from pathlib import Path
-import shutil
+import enum
+from fastapi import FastAPI
 
 
 def get_or_create_event_loop():
@@ -28,6 +26,69 @@ def get_or_create_event_loop():
             return loop
 
 
+class Singleton(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        local = kwargs.pop("__local__", False)
+        if local is False:
+            if cls not in cls._instances:
+                cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+            return cls._instances[cls]
+        else:
+            return super(Singleton, cls).__call__(*args, **kwargs)
+
+
+class Field(str, enum.Enum):
+    STATE = "state"
+    DATA = "data"
+    CONTEXT = "context"
+
+
+class _PatchableJson(dict):
+    def __init__(self, field: Field, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._field = field
+        self._linked_obj = None
+
+    def raise_for_key(self, key: str):
+        if key in self:
+            raise KeyError(f"Key {key} already exists in {self._field}")
+
+    def __update(self, js_obj):
+        self.update(js_obj.to_py())
+
+    def link(self, js_obj):
+        self._linked_obj = js_obj
+        self.__update(js_obj)
+
+    def send_changes(self):
+        if self._linked_obj is None:
+            return
+        from pyodide.ffi import to_js
+
+        for key, value in to_js(self):
+            self._linked_obj[key] = value
+
+
+class StateJson(_PatchableJson, metaclass=Singleton):
+    def __init__(self, *args, **kwargs):
+        super().__init__(Field.STATE, *args, **kwargs)
+
+
+class DataJson(_PatchableJson, metaclass=Singleton):
+    def __init__(self, *args, **kwargs):
+        super().__init__(Field.DATA, *args, **kwargs)
+
+
+class MainServer(metaclass=Singleton):
+    def __init__(self):
+        self._server = FastAPI()
+
+    def get_server(self) -> FastAPI:
+        return self._server
+
+
 # SDK code
 class WebPyApplication:
     def __init__(self):
@@ -46,6 +107,9 @@ class WebPyApplication:
         self._context = app.context  # ??
         self._store = slyApp.store  # <- Labeling tool store (image, classes, objects, etc)
 
+        StateJson().link(self._state)
+        DataJson().link(self._data)
+
         self.is_inited = True
 
     # Labeling tool data access
@@ -57,28 +121,24 @@ class WebPyApplication:
 
     @property
     def state(self):
-        from supervisely.app.content import StateJson
-
-        # if not self.is_inited:
-        #     self.__init_state()
-        with open("src/state.json", "r") as f:
-            self._state = json.load(f)
+        if not self.is_inited:
+            self.__init_state()
         StateJson().update(self._state)
         return StateJson()
 
     @property
     def data(self):
-        from supervisely.app.content import DataJson
-
-        # if not self.is_inited:
-        #     self.__init_state()
-        with open("src/data.json", "r") as f:
-            self._data = json.load(f)
+        if not self.is_inited:
+            self.__init_state()
         DataJson().update(self._data)
         return DataJson()
 
     @classmethod
     def render(cls, layout, dir=""):
+        import json
+        import os
+        from pathlib import Path
+        import shutil
         import supervisely as sly
         from supervisely.app.content import DataJson, StateJson
         from fastapi.staticfiles import StaticFiles
@@ -96,9 +156,10 @@ class WebPyApplication:
         json.dump(StateJson(), open(dir / "state.json", "w"))
         json.dump(DataJson(), open(dir / "data.json", "w"))
 
-        shutil.copy("sly.py", dir / "sly.py")
         shutil.copy("gui.py", dir / "gui.py")
         shutil.copy("main.py", dir / "main.py")
+
+        shutil.copytree("sly_sdk", dir / "sly_sdk")
 
         server = app.get_server()
         for route in server.routes:
@@ -135,13 +196,12 @@ class WebPyApplication:
 
     def run(self, *args, **kwargs):
         import gui
-        from supervisely.app.fastapi import _MainServer
         from fastapi.routing import APIRoute
 
         self.state
         self.data  # to init StateJson and DataJson
 
-        server = _MainServer().get_server()
+        server = MainServer().get_server()
         handlers = {}
         for route in server.router.routes:
             if isinstance(route, APIRoute):
