@@ -148,7 +148,7 @@ class WebPyApplication:
         return DataJson()
 
     @classmethod
-    def render(cls, layout, dir="", requirements_path: str = None):
+    def render(cls, layout, src_dir="", app_dir="", requirements_path: str = None):
         import json
         import os
         from pathlib import Path
@@ -166,18 +166,19 @@ class WebPyApplication:
         # @change="post('/{{{widget.widget_id}}}/value_changed')" -> @change="runPythonScript('/{{{widget.widget_id}}}/value_changed')"
         index = index.replace("post('/", "runPythonScript('/")
 
-        dir = Path(dir)
-        os.makedirs(dir, exist_ok=True)
-        with open(dir / "index.html", "w") as f:
+        src_dir = Path(src_dir)
+        app_dir = Path(app_dir)
+        os.makedirs(app_dir, exist_ok=True)
+        with open(app_dir / "index.html", "w") as f:
             f.write(index)
 
-        json.dump(StateJson(), open(dir / "state.json", "w"))
-        json.dump(DataJson(), open(dir / "data.json", "w"))
+        json.dump(StateJson(), open(app_dir / "state.json", "w"))
+        json.dump(DataJson(), open(app_dir / "data.json", "w"))
 
-        shutil.copy("gui.py", dir / "gui.py")
-        shutil.copy("main.py", dir / "main.py")
+        shutil.copy(src_dir / "gui.py", app_dir / "gui.py")
+        shutil.copy(src_dir / "main.py", app_dir / "main.py")
 
-        with tarfile.open(dir / "sly_sdk.tar", "w") as tar:
+        with tarfile.open(app_dir / "sly_sdk.tar", "w") as tar:
             tar.add(
                 "sly_sdk",
                 arcname="sly_sdk",
@@ -200,7 +201,7 @@ class WebPyApplication:
                             for file in files:
                                 if file.endswith(("css", "js", "html")):
                                     sly.fs.copy_file(
-                                        Path(root, file), dir / Path("sly/css", rel_path, file)
+                                        Path(root, file), app_dir / Path("sly/css", rel_path, file)
                                     )
 
     def _get_handler(self, *args, **kwargs):

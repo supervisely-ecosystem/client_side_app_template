@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 from sly_sdk.sly import WebPyApplication
 
 
@@ -12,8 +13,15 @@ def find_gui_dir():
 
 
 if __name__ == "__main__":
-    import gui
+    from src.gui import layout
 
+    if len(sys.argv) < 2:
+        src_path = "src"
+    else:
+        src_path = sys.argv[1]
     WebPyApplication.render(
-        layout=gui.layout, dir=find_gui_dir(), requirements_path="requirements.txt"
+        layout=layout,
+        src_dir=src_path,
+        app_dir=find_gui_dir(),
+        requirements_path="requirements.txt",
     )
