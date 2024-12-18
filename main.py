@@ -1,9 +1,4 @@
-import sys
-
 from sly_sdk.sly import WebPyApplication
-import sly_sdk as supervisely
-
-sys.modules["supervisely"] = supervisely
 
 
 app = WebPyApplication()
@@ -17,6 +12,8 @@ def main(*args, **kwargs):
 
 
 if __name__ == "__main__":
+    import sys
+
     app.run(*sys.argv[1:])
 
 app.run
