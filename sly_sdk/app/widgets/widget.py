@@ -23,12 +23,12 @@ from sly_sdk.sly import DataJson, StateJson, MainServer, Singleton
 #     return env_sly
 
 
-class JinjaWidgets(metaclass=Singleton):
-    def __init__(self, auto_widget_id=True):
-        self.auto_widget_id = auto_widget_id
-        self.context = {}
-        self.context["__no_html_mode__"] = auto_widget_id
-        self.context["__widget_scripts__"] = {}
+# class JinjaWidgets(metaclass=Singleton):
+#     def __init__(self, auto_widget_id=True):
+#         self.auto_widget_id = auto_widget_id
+#         self.context = {}
+#         self.context["__no_html_mode__"] = auto_widget_id
+#         self.context["__widget_scripts__"] = {}
 
 
 class BaseWidget:

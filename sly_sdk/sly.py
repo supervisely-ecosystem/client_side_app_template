@@ -238,7 +238,7 @@ class WebPyApplication:
         if handler is not None:
             return self._run_handler(handler)
         if self._run_f is None:
-            raise NotImplementedError("Run function is not defined")
+            print("Unknown command")
         return self._run_f(*args, **kwargs)
 
     def run_function(self, f):
