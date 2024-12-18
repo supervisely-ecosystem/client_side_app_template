@@ -68,17 +68,21 @@ class _PatchableJson(dict):
             return
 
         from pyodide.ffi import to_js
+        from pyodide.js import Object
 
-        def _rec(d, js):
-            for key, value in d.items():
-                if isinstance(value, dict):
-                    if not hasattr(js, key):
-                        setattr(js, key, {})
-                    _rec(value, getattr(js, key))
-                else:
-                    setattr(js, key, to_js(value))
+        def py_to_js(obj):
+            if isinstance(obj, dict):
+                js_obj = Object()
+                for key, value in obj.items():
+                    setattr(js_obj, key, py_to_js(value))
+                return js_obj
+            elif isinstance(obj, list):
+                return [py_to_js(item) for item in obj]
+            else:
+                return to_js(obj)
 
-        _rec(self, self._linked_obj)
+        for key, value in self.items():
+            setattr(self._linked_obj, key, py_to_js(value))
 
 
 class StateJson(_PatchableJson, metaclass=Singleton):
