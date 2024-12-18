@@ -178,7 +178,7 @@ class Select(ConditionalWidget):
 
     def value_changed(self, func):
         route_path = self.get_route_path(Select.Routes.VALUE_CHANGED)
-        server = MainServer()
+        server = MainServer().get_server()
         self._changes_handled = True
 
         @server.post(route_path)

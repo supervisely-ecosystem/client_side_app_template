@@ -282,7 +282,7 @@ class Button(Widget):
         :rtype: Callable
         """
         route_path = self.get_route_path(Button.Routes.CLICK)
-        server = MainServer()
+        server = MainServer().get_server()
         self._click_handled = True
 
         @server.post(route_path)
