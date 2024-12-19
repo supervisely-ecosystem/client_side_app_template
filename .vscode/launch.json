@@ -17,6 +17,16 @@
             "args": ["/widget_2/value_changed"],
             "console": "integratedTerminal",
             "justMyCode": false
+        },
+        {
+            "name": "Python Debugger: Release",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/.venv/lib64/python3.12/site-packages/supervisely/cli/cli.py",
+            "args": ["release"],
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}"
         }
     ]
 }
