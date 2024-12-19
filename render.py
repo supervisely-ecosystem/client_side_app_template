@@ -15,10 +15,14 @@ def find_gui_dir():
 if __name__ == "__main__":
     from src.gui import layout
 
+    print("im in render")
+
     if len(sys.argv) < 2:
         src_path = "src"
     else:
         src_path = sys.argv[1]
+    print("src_path: ", src_path)
+    print("app_dir", find_gui_dir())
     WebPyApplication.render(
         layout=layout,
         src_dir=src_path,
