@@ -1,6 +1,5 @@
 import asyncio
 import enum
-import io
 import json
 import tarfile
 import time
