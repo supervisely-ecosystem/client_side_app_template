@@ -7,9 +7,8 @@ except ImportError:
 
     sys.modules["supervisely"] = supervisely
 
-from sly_sdk.sly import WebPyApplication
+from sly_sdk.webpy import WebPyApplication
 
+from src.gui import layout
 
-app = WebPyApplication()
-
-app.run
+app = WebPyApplication(layout)
