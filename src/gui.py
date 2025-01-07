@@ -1,24 +1,33 @@
-from supervisely.app.widgets import Text, Container, Button, Select
+from supervisely.app.widgets import Container, Slider, Switch, Field
+from supervisely.sly_logger import logger
 
 
-text: Text = globals().get("text", Text("Hello, World!", widget_id="widget_1"))
-select: Select = globals().get(
-    "select",
-    Select(
-        items=[Select.Item("Option 1"), Select.Item("Option 2"), Select.Item("Option 3")],
-        widget_id="widget_2",
-    ),
+# Creating widget to turn on/off the processing of labels.
+need_processing = Switch(switched=True, widget_id="need_processing_widget")
+processing_field = Field(
+    title="Process masks",
+    description="If turned on, then the mask will be processed after every change on left mouse release after drawing",
+    content=need_processing,
+    widget_id="processing_field_widget",
 )
-button = globals().get("button", Button("Click me!", widget_id="widget_3"))
-layout = globals().get("layout", Container(widgets=[text, select, button], widget_id="widget_4"))
+
+# Creating widget to set the strength of the processing.
+dilation_strength = Slider(value=10, min=1, max=50, step=1, widget_id="dilation_strength_widget")
+dilation_strength_field = Field(
+    title="Dilation",
+    description="Select the strength of the dilation operation",
+    content=dilation_strength,
+    widget_id="dilation_strength_field_widget",
+)
+
+layout = Container(widgets=[processing_field, dilation_strength_field], widget_id="layout_widget")
 
 
-@select.value_changed
-def on_select_change(value):
-    print("Select value changed:", value)
+@need_processing.value_changed
+def processing_switched(is_switched):
+    logger.debug(f"Processing is now {is_switched}")
 
 
-@button.click
-def on_button_click():
-    print("Button clicked!")
-    text.text = str(select.get_value())
+@dilation_strength.value_changed
+def strength_changed(value):
+    logger.debug(f"Strength is now {value}")
