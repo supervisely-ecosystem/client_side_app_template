@@ -1,4 +1,3 @@
-from datetime import datetime
 import cv2
 import numpy as np
 from sly_sdk.webpy import WebPyApplication
