@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import List
 
 
-from sly_sdk.webpy import DataJson, StateJson, MainServer, Singleton
+from sly_sdk.webpy.app import DataJson, StateJson, MainServer, Singleton
 
 
 # def rand_str(length):
@@ -32,8 +32,12 @@ from sly_sdk.webpy import DataJson, StateJson, MainServer, Singleton
 
 
 class BaseWidget:
-    def __init__(self, widget_id: str):
-        super().__init__()
+    widgets_counter = 0
+
+    def __init__(self, widget_id: str = None):
+        BaseWidget.widgets_counter += 1
+        if widget_id is None:
+            widget_id = "widget_" + str(BaseWidget.widgets_counter)
         self.server = MainServer()
         self.widget_id = widget_id
 
@@ -166,9 +170,6 @@ class Loading:
 
 class Widget(BaseWidget, Hidable, Disableable, Loading):
     def __init__(self, widget_id: str = None):
-        # widget_id = self.__init_widget_id(widget_id)
-        if widget_id is None:
-            raise ValueError("widget_id must be provided for webpy runtime")
         super().__init__(widget_id=widget_id)
         Hidable.__init__(self)
         Disableable.__init__(self)

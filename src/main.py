@@ -28,15 +28,15 @@ def process(mask: np.ndarray) -> np.ndarray:
     return dilation
 
 
-@app.event(app.Event.figure_geometry_saved)
-def on_figure_geometry_saved(data):
+@app.event(app.Event.FigureGeometrySaved)
+def on_figure_geometry_saved(event: WebPyApplication.Event.FigureGeometrySaved):
     logger.info("Left mouse button released after drawing mask with brush")
     if not need_processing.is_on():
         # Checking if the processing is turned on in the UI.
         return
 
     # Get figure
-    figure_id = data["figureId"]
+    figure_id = event.figure_id
     figure = app.get_figure_by_id(figure_id)
 
     # app.update_figure_geometry will trigger the same event, so we need to avoid infinite recursion.
